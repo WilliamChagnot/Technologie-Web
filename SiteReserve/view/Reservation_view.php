@@ -2,13 +2,13 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <title>RESERVATION</title>
+    <title>Réservation</title>
 </head>
 <body>
 
 
 <section>
-    <form method="POST" action="Choix_view.php">
+    <form method="POST" action="controller/Controller.php">
         <div id="coordonnees">
             <fieldset>
                 <legend>Reservation</legend>
@@ -16,22 +16,40 @@
                     Le prix de la place est de 10€ jusqu'à 12 ans et ensuite de 15€.<br /><br />
                     Le prix de l'assurance annulation est de 20€ quel que soit le nombre de voyageurs.
                 </p>
-                <p>
-                    <label>Destination :</label> <br />
-                    <input type="text" name="Destination" size="30" required />
-                </p>
+                <?php
+                if ($error)
+                {
+                  echo "<div class='error'>Veuillez indiquer le nombre de voyageurs.</div>";
+                }
+                ?>
+                <p><label for="Destination">Destination</label>:
+                <select name="Destination" size=1 id="Destination">;
+
+                <?php
+                  $destinations = array('Amsterdam','Berlin','Bruxelles','Londres','Paris');
+                      foreach($destinations as $destine)
+                      {
+                        echo '<option>' . $destine . '</option><br/>';
+                      }
+                ?>
+                </select>
                 <p>
                     <label>Nombre de place :</label> <br />
-                    <input type="number" name="NbPlace" size="30" min="1" required />
-                </p>
-                <p>
-                    Assurance annulation :
-                    <input type="checkbox" name="Assurance" />
+                    <?php
+                      //To set the value for the checkbox entry
+                      $insur_check = ($Reservation->getAssurance()) ? 'checked' : "" ;
+
+                      echo "<input type='number' value='" . $Reservation->getNbPerson()
+                          . "' name='NbPlace' size='5' min='1' id='place''>
+
+                          <p><label for='insurance'>Assurance annulation</label>
+                          <input type='checkbox' name='Assurance' id='insur'" . $insur_check . ">";
+                    ?>
                 </p>
             </fieldset>
         </div>
-        <input type="submit" name="submit" value="Etape suivante" />
-        <input type="reset" name="reset" value="Annuler la réservation">
+        <input type="submit" name="ReservSent" value="Etape suivante" />
+        <input type="reset" value="Annuler la réservation" />
     </form>
 </section>
 </body>

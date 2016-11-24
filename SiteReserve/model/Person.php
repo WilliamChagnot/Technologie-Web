@@ -2,10 +2,10 @@
 
 class Person
 {
-  private name;
-  private age;
+  private $name;
+  private $age;
 
-  public function __construct($name, $age)
+  function __construct($name = "", $age = 0)
   {
     $this->name = $name;
     $this->age = $age;
@@ -15,10 +15,18 @@ class Person
   {
     return $this->name;
   }
+  public function setName($name)
+  {
+    $this->name = $name;
+  }
 
   public function getAge()
   {
     return $this->age;
+  }
+  public function setAge($age)
+  {
+    $this->age = $age;
   }
 }
 
