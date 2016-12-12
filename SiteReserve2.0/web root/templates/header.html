@@ -1,0 +1,27 @@
+<?php
+
+//include the functions script:
+include('includes/functions.php'); ?>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" media="all" href="css/style.css">
+  <title>
+    <?php
+    if (defined('TITLE'))
+    {
+      print TITLE;
+    }
+    else
+    {
+      print 'My Site of Reservations';
+    }
+    ?>
+  </title>
+</head>
+<body>
+  <div id="container">
+    <h1>Reservations</h1>
+    <br>
+    <!-- BEGIN CHANGEABLE CONTENT. -->
