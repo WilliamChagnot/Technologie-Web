@@ -27,13 +27,13 @@ function is_connected($name = 'test', $value = 'test')
   }
 }
 
-function get_something($value)
+function get_something($value, $sort = 'date_entered')
 {
   // Need the database connection:
   include('../mysqli_connect.php');
 
   // Define the query:
-  $query = 'SELECT id, destination, nbpeople, assurance FROM reservations ORDER BY date_entered DESC';
+  $query = 'SELECT id, destination, nbpeople, assurance FROM reservations ORDER BY " . $sort . " DESC';
 
   // Run the query:
   if ($result = mysqli_query($dbc, $query))
@@ -41,7 +41,7 @@ function get_something($value)
     //Retrieve the returned records:
     while ($row = mysqli_fetch_array($result))
     {
-      // Print the record:
+      // Take the last value:
       $id = $row[$value];
 
     } // End of while loop.

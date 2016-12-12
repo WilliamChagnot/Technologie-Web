@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
     $query = "INSERT INTO reservations (destination, nbpeople, assurance) VALUES ('$destination', '$nbpeople', '$assurance')";
     mysqli_query($dbc, $query);
 
-    // The reservation has been made. (in work).
+    // The reservation has been made.
     if (mysqli_affected_rows($dbc) == 1)
     {
       print '<p>Your reservation has been stored.</p><p>Your ID is: ' . get_something('id') . '</p>';
@@ -43,9 +43,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
         <?php
         for($i=0; $i<$nbpeople; $i++)
         {
-          // Trying to get the name and age of the users. (in work).
-          print '<p><label>Person ' . $i . ': <input type="text" name="name[]"></label></p>';
-          print '<p><label>Age <input type="number" name="age[]">';
+          // Trying to get the name and age of the users.
+          print '<p><label>Name ' . $i . ': <input type="text" name="name[]"></label></p>';
+          print '<p><label>Age <input type="number" name="age[]"></label></p>';
         }
         ?>
         <p><input type="submit" name="submit" value="Add this reservation!"></p>
@@ -54,14 +54,43 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
     }
 
     // The reservation didn't works.
-    else { print '<p class="error">Could not store the reservation because:<br>' . mysqli_error($dbc) . '.</p><p>The query being run was: ' . $query . '</p>'; }
+    else { print '<p class="error">Could not store the reservation please contact an administrator.<br></p>'; }
 
     // Close the connection:
     mysqli_close($dbc);
   }
-  // Validation of the people doing the reservation. ("name" and "age" are array) (in work).
+  // Validation of the people doing the reservation. ("name" and "age" are array).
   elseif (!empty($_POST['name']) && !empty($_POST['age'])) {
-    print $_POST['name[0]'];
+
+    // Need the database connection:
+    include('../mysqli_connect.php');
+
+    // Get the ID and the number of people from the last user.
+    $nbpeople = get_something('nbpeople');
+    $id = get_something('id');
+
+    for($i=0; $i<$nbpeople; $i++)
+    {
+      // Prepare the values for storing:
+      $name = mysqli_real_escape_string($dbc, trim(strip_tags($_POST['name'][$i])));
+      $age = mysqli_real_escape_string($dbc, trim(strip_tags($_POST['age'][$i])));
+      $id = mysqli_real_escape_string($dbc, trim(strip_tags($id)));
+
+      // Define the query.
+      $query = "INSERT INTO peoples (name, age, id) VALUES ('$name', '$age', '$id')";
+      mysqli_query($dbc, $query);
+    }
+
+    // Check if the reservation has been made.
+    if (mysqli_affected_rows($dbc) == 1)
+    {
+      print 'Successful!';
+    }
+    else {
+      print 'Something might went wrong.';
+    }
+    // Close the connection:
+    mysqli_close($dbc);
   }
   else
   {
