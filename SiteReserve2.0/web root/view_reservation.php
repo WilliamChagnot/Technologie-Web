@@ -1,10 +1,10 @@
 <?php
 
 // Include the header:
-define('TITLE', 'View All Reservations');
+define('TITLE', 'View Reservation');
 include('templates/header.html');
 
-print '<h2>All Reservations</h2>';
+print '<h2>Reservation</h2>';
 
 // Restrict access to administrators only:
 if (!is_administrator())
@@ -29,7 +29,7 @@ if ($result = mysqli_query($dbc, $query))
     // Print the record:
     print "<div><blockquote>ID: {$row['id']}</blockquote><blockquote>{$row['destination']}</blockquote>NbPeople: {$row['nbpeople']}\n";
 
-    // Is this a favorite?
+    // Assurance?
     if ($row['assurance'] == 1)
     {
       print '<strong>Assurance!</strong>';

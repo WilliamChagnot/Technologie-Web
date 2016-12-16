@@ -49,8 +49,6 @@ if (isset($_GET['id']) && is_numeric($_GET['id']) && ($_GET['id'] > 0))
   }
 } elseif (isset($_POST['id']) && is_numeric($_POST['id']) && ($_POST['id'] > 0))
 {
-  // Handle the form.
-
   // Define the query:
   $query = "DELETE FROM reservations WHERE id={$_POST['id']} LIMIT 1";
   $result = mysqli_query($dbc, $query); // Execute the query.
