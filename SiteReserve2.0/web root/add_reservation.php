@@ -1,11 +1,11 @@
 <?php
 session_start();
 
-// Define a page title and include the header:
+// Define a page title and include the header.
 define('TITLE', 'Add a Reservation');
 include('templates/header.html');
 
-// Restrict access to connected people only:
+// Restrict access to connected people only.
 if (!is_connected())
 {
   print '<h2>Access Denied!</h2><p classe="error">You do not have permission to access this page.</p>';
@@ -13,7 +13,7 @@ if (!is_connected())
   exit();
 }
 
-// Check for a form submission:
+// Check for a form submission.
 if ($_SERVER['REQUEST_METHOD'] == 'POST')
 {
   if (!empty($_POST['destination']) && !empty($_POST['nbpeople']))
@@ -21,14 +21,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
     // Set to get the price.
     $_SESSION['price'] = 0;
 
-    // Need the database connection:
+    // Need the database connection.
     include('../mysqli_connect.php');
 
-    // Prepare the values for storing:
+    // Prepare the values for storing.
     $destination = mysqli_real_escape_string($dbc, trim(strip_tags($_POST['destination'])));
     $nbpeople = mysqli_real_escape_string($dbc, trim(strip_tags($_POST['nbpeople'])));
 
-    // Create the "assurance" value:
+    // Create the "assurance" value.
     if (isset($_POST['assurance']))
     { $assurance = 1;
       $_SESSION['price'] += 20; }
@@ -42,45 +42,34 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
     // The reservation has been made.
     if (mysqli_affected_rows($dbc) == 1)
     {
-      // Get the ID and the number of people from the user.
+      // Get the ID, the number of people and the destination from the user.
       $_SESSION['nbpeople'] = get_something('nbpeople');
       $_SESSION['id'] = get_something('id');
       $_SESSION['destination'] = get_something('destination');
-
       print '<p>Your reservation has been stored.</p><p>Your ID is: ' . $_SESSION['id'] . '</p>';
 
-      ?>
-      <form action="add_reservation.php" method="post">
-        <?php
-        for($i=0; $i<$_SESSION['nbpeople']; $i++)
-        {
-          // Get the name and age of the users.
-          print '<p><label>Name ' . $i . ': <input type="text" name="name[]"></label></p>';
-          print '<p><label>Age <input type="number" min="0" name="age[]"></label></p>';
-        }
-        ?>
-        <p><input type="submit" name="submit" value="Add this reservation!"></p>
-     </form>
-     <?php
+      // include the view.
+      include('templates/people.html');
     }
 
     // The reservation didn't works.
     else { print '<p class="error">Could not store the reservation please contact an administrator.<br></p>'; }
 
-    // Close the connection:
+    // Close the connection.
     mysqli_close($dbc);
   }
   // Validation of the people doing the reservation ("name" and "age" are array).
   elseif (!empty($_POST['name']) && !empty($_POST['age'])) {
 
-    // Need the database connection:
+    // Need the database connection.
     include('../mysqli_connect.php');
 
     for($i=0; $i<$_SESSION['nbpeople']; $i++)
     {
+      // Get the right price.
       $_SESSION['price'] += price($_POST['age'][$i]);
 
-      // Prepare the values for storing:
+      // Prepare the values for storing.
       $name = mysqli_real_escape_string($dbc, trim(strip_tags($_POST['name'][$i])));
       $age = mysqli_real_escape_string($dbc, trim(strip_tags($_POST['age'][$i])));
       $id = mysqli_real_escape_string($dbc, trim(strip_tags($_SESSION['id'])));
@@ -89,11 +78,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
       $query = "INSERT INTO peoples (name, age, id) VALUES ('$name', '$age', '$id')";
       mysqli_query($dbc, $query);
     }
+    // Close the connection.
     mysqli_close($dbc);
 
+    // Need the database connection.
     include('../mysqli_connect.php');
+
+    // Prepare the value for storing.
     $price = mysqli_real_escape_string($dbc, trim(strip_tags($_SESSION['price'])));
 
+    // Define the query.
     $querybis = "UPDATE reservations SET price = ('$price') WHERE id = ('$id')";
     mysqli_query($dbc, $querybis);
 
@@ -106,41 +100,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
       <p>Number of people: ' . $_SESSION['nbpeople'] . '</p>
       <p>Cost: ' . $_SESSION['price'] . '</p>
       <p>We wish you a pleasant journey!</p>';
-      clean();
     }
-    else {
-      print 'Something might went wrong.';
-    }
-    // Close the connection:
+    else { print '<p class="error">Could not store the reservation please contact an administrator.<br></p>'; }
+
+    // Close the connection.
     mysqli_close($dbc);
   }
-  else
-  {
-    print '<p class="error">Please enter a destination and a number of people!</p>';
-  }
+  else { print '<p class="error">Please enter a destination and a number of people!</p>'; }
 } // End of submitted IF.
-else { //First page.
-  ?>
-  <h2>Add a Reservation</h2><p>
-  Le prix de la place est de 10€ jusqu'à 12 ans et ensuite de 15€.<br />
-  Le prix de l'assurance annulation est de 20€ quel que soit le nombre de voyageurs.</p>
-  <form action="add_reservation.php" method="post">
-   <p><label>Destination </label>
-     <select name="destination" size=1 id="destination">;
-       <?php
-       $destinations = array('Amsterdam','Berlin','Bruxelles','Londres','Paris');
-       foreach($destinations as $destine)
-       {
-         echo '<option>' . $destine . '</option><br/>';
-       }
-       ?>
-     </select></p>
-     <p><label>Number of people <input type="number" min="1" name="nbpeople"></label></p>
-     <p><label>Assurance? <input type="checkbox" name="assurance" value="yes"></label></p>
-     <p><input type="submit" name="submit" value="Add this reservation!"></p>
-  </form>
-  <?php
-}
-?>
+else { /*First page.*/ include('templates/destination.html'); }
 
-<?php include('templates/footer.html'); ?>
+include('templates/footer.html'); ?>

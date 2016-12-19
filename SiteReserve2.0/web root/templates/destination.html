@@ -1,0 +1,21 @@
+
+<h2>Add a Reservation</h2><p>
+Le prix de la place est de 10€ jusqu'à 12 ans et ensuite de 15€.<br />
+Le prix de l'assurance annulation est de 20€ quel que soit le nombre de voyageurs.</p>
+<form action="add_reservation.php" method="post">
+ <p><label>Destination </label>
+   <select name="destination" size=1 id="destination">;
+     <?php
+     $destinations = array('Amsterdam','Berlin','Bruxelles','Londres','Paris');
+     foreach($destinations as $destine)
+     {
+       echo '<option>' . $destine . '</option><br/>';
+     }
+     ?>
+   </select></p>
+   <p><label>Number of people <input type="number" min="1" name="nbpeople"></label></p>
+   <p><label>Assurance? <input type="checkbox" name="assurance" value="yes"></label></p>
+   <p><input type="submit" name="submit" value="Add this reservation!"></p>
+   <p><input type="reset" value="Reset the value"></p>
+</form>
+<?php

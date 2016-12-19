@@ -31,9 +31,7 @@ if ($result = mysqli_query($dbc, $query))
 
     // Assurance?
     if ($row['assurance'] == 1)
-    {
-      print '<strong>Assurance!</strong>';
-    }
+    { print '<strong>Assurance!</strong>'; }
 
     // Add administrative links:
     print "<p><b>Admin:</b> <a href=\"edit_reservation.php?id={$row['id']}\">Edit</a>
@@ -43,7 +41,7 @@ if ($result = mysqli_query($dbc, $query))
 }
 else
 {
-  // Query didn't run.
+  // Query didn't run. Only the administrator can see this.
   print '<p class="error">Could not retrieve the data because:<br>' .
   mysqli_error($dbc) . '.</p><p>The query being run was: ' . $query .
   '</p>';

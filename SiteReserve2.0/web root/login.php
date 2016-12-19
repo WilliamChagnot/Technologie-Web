@@ -1,11 +1,11 @@
 <?php
 // This page lets people log into the site.
 
-// Set two variables with defaut values:
+// Set two variables with defaut values.
 $loggedin = false;
 $error = false;
 
-// Check if the form has been submitted:
+// Check if the form has been submitted.
 if ($_SERVER['REQUEST_METHOD'] == 'POST')
 {
 
@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
       // Create the cookie:
       setcookie('ECAM', 'Info', time()+3600);
 
-      // Indicate they are logged in:
+      // Indicate they are logged in.
       $loggedin = true;
     }
     else
@@ -31,18 +31,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
   }
 }
 
-// Set the page title and include the header file:
+// Set the page title and include the header file.
 define('TITLE', 'Login');
 include("templates/header.html");
 
-// Print an error if one exists:
+// Print an error if one exists.
 if ($error) {
   print "<p class='error'>" . $error . "</p>";
 }
 
-// Indicate the user is logged in, or show the form:
-if ($loggedin) {
-
+// Indicate the user is logged in, or show the form.
+if ($loggedin)
+{
   print "<p>You are now logged in!</p>";
 
 } else {

@@ -43,7 +43,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id']) && ($_GET['id'] > 0))
   }
   else
   {
-    // Couldn't get the information.
+    // Couldn't get the information. Only an admin can see this.
     print '<p class="error">Cloud not retrieve the reservation because:<br>' . mysqli_error($bdc) .
     '.</p><p>The query being run was: ' . $query . '</p>';
   }
@@ -60,6 +60,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id']) && ($_GET['id'] > 0))
   }
   else
   {
+    // Couldn't get the information. Only an admin can see this.
     print '<p class="error">Could not delete the blog entry because:<br>' . mysqli_error($bdc) .
     '</p><p>The query being run was: ' . $query . '</p>';
   }

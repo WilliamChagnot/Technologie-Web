@@ -1,0 +1,17 @@
+
+<form action="add_reservation.php" method="post">
+  <?php
+  for($i=0; $i<$_SESSION['nbpeople']; $i++)
+  {
+    // Get the name and age of the users.
+    print '<p><label>Name ' . $i . ': <input type="text" name="name[]"></label></p>';
+    print '<p><label>Age <input type="number" min="0" name="age[]"></label></p>';
+  }
+  ?>
+  <p><input type="submit" name="submit" value="Add this reservation!"></p>
+  <p><input type="reset" value="Reset the value"></p>
+</form>
+<form action="index.php">
+  <p><input type="submit" value="Cancel the reservation"></p>
+</form>
+<?php

@@ -36,9 +36,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id']) && ($_GET['id'] > 0))
 
     // Check the box for the assurance:
     if ($row['assurance'] == 1)
-    {
-      print ' checked="checked"';
-    }
+    { print ' checked="checked"'; }
 
     // Complete the form:
     print '></label></p>
@@ -48,7 +46,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id']) && ($_GET['id'] > 0))
   }
   else
   {
-    // Couldn't get the information.
+    // Couldn't get the information. Only an admin can see this.
     print '<p class="error">Could not retrieve the reservation because:<br>' . mysqli_error($dbc) .
     '.</p><p>The query being run was: ' . $query . '</p>';
   }
@@ -64,13 +62,9 @@ if (isset($_GET['id']) && is_numeric($_GET['id']) && ($_GET['id'] > 0))
 
     // Create the assurance value:
     if (isset($_POST['assurance']))
-    {
-      $assurance = 1;
-    }
+    { $assurance = 1; }
     else
-    {
-      $assurance = 0;
-    }
+    { $assurance = 0; }
   }
   else
   {
@@ -88,10 +82,11 @@ if (isset($_GET['id']) && is_numeric($_GET['id']) && ($_GET['id'] > 0))
     }
     else
     {
+      // Couldn't get the information. Only an admin can see this.
       print '<p class="error">Could not update the reservation because:<br>' . mysqli_error($dbc) .
       '.</p><p>The query being run was: ' . $query . '</p>';
     }
-  } // No problem!
+  }
 }
 else
 { // No ID set.

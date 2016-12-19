@@ -81,44 +81,52 @@ function price($age)
   return $price;
 }
 
-// Work in progress.
+//This function clean the database by deleting the rows in reservations who don't have peoples link with.
+//This function don't take value.
+//This function don't return value.
 function clean()
 {
   // Need the database connection:
   include('../mysqli_connect.php');
 
-
-
-  // Define the query:
-  $idR = 'SELECT id FROM reservations';
-  $idP = 'SELECT id FROM peoples';
+  // Define the query for the resrvations table:
+  $queryR = 'SELECT id, destination, nbpeople, assurance FROM reservations ORDER BY date_entered';
 
   // Run the query:
-  if ($resultR = mysqli_query($dbc, $idR) && $resultP = mysqli_query($dbc, $idP))
+  if ($resultR = mysqli_query($dbc, $queryR))
   {
-    $useless = true;
-
     //Retrieve the returned records:
     while ($rowR = mysqli_fetch_array($resultR))
     {
-      while ($rowP = mysqli_fetch_array($resultP))
+      // Check if the id's matches, if they match -> it's usefull, if not -> is useless.
+      $usefull = false;
+      $queryP = 'SELECT name, age, id FROM peoples ORDER BY date_entered';
+
+      // Run the query:
+      if ($resultP = mysqli_query($dbc, $queryP))
       {
-        print 'ici';
-        if ($rowR['id'] == $rowP['id'])
+        //Retrieve the returned records:
+        while ($rowP = mysqli_fetch_array($resultP))
         {
-          $useless = false;
+          // The id's matches?
+          if ($rowP['id'] == $rowR['id'])
+          {
+            $usefull = true;
+          }
         }
       }
-      if ($useless)
+
+      // If the row in reservation don't have peoples associate.
+      if (!$usefull)
       {
-        // Define the query:
-        $query = "DELETE FROM reservations WHERE id='$idR' LIMIT 1";
-        $result = mysqli_query($dbc, $query); // Execute the query.
+        print 'useless';
+        $query = "DELETE FROM reservations WHERE id={$rowR['id']} LIMIT 1";
+        $result = mysqli_query($dbc, $query);
 
         // Report on the result:
         if (mysqli_affected_rows($dbc) == 1)
         {
-          print '<p>Clean.</p>';
+          print '<p>The reservation has been deleted.</p>';
         }
         else
         {
