@@ -33,6 +33,7 @@ function is_connected($name = 'test', $value = 'test')
 //This function is use to get the a value in the database from the last user.
 //This function takes two optional values.
 //This function returns a value.
+// STILL IN PROGRESS, ONLY WORK FOR ID.
 function get_something($value, $sort = 'date_entered')
 {
   // Need the database connection:
@@ -41,6 +42,8 @@ function get_something($value, $sort = 'date_entered')
   // Define the query:
   $query = 'SELECT id, destination, nbpeople, assurance FROM reservations ORDER BY " . $sort . " DESC';
 
+  $id = 0;
+
   // Run the query:
   if ($result = mysqli_query($dbc, $query))
   {
@@ -48,18 +51,21 @@ function get_something($value, $sort = 'date_entered')
     while ($row = mysqli_fetch_array($result))
     {
       // Take the last value:
-      $id = $row[$value];
-
+      if ($id < $row[$value])
+      {
+        $id = $row[$value];
+      }
     } // End of while loop.
     return $id;
   }
 
   else
   {
-    // Query didn't run.
+    error();
+    /* Query didn't run.
     print '<p class="error">Could not retrieve the data because:<br>' .
     mysqli_error($dbc) . '.</p><p>The query being run was: ' . $query .
-    '</p>';
+    '</p>'; */
   } // End of query IF.
 
   // Close the connection.
@@ -144,7 +150,48 @@ function clean()
 // Is use to destroy the cookie in case of error.
 function error()
 {
+  print '<p class="error">Could not store the reservation please contact an administrator.<br></p>';
   setcookie('test', 'test', time()-4000);
-  clean();
+  //clean();
+}
+
+
+function printpeople($id)
+{
+  // Need the database connection:
+  include('../mysqli_connect.php');
+
+  // Define the query:
+  $query = 'SELECT name, age, id FROM peoples ORDER BY date_entered DESC';
+
+  // Run the query:
+  if ($result = mysqli_query($dbc, $query))
+  {
+    //Retrieve the returned records:
+    while ($row = mysqli_fetch_array($result))
+    {
+
+
+      if ($row['id'] = $id)
+      {
+        print $row['id'];
+
+        // Print the record:
+        print "<div><blockquote>ID: {$row['id']}</blockquote><blockquote>Name: {$row['name']}</blockquote>Age: {$row['age']}\n";
+
+      }
+
+    } // End of while loop.
+  }
+  else
+  {
+    // Query didn't run. Only the administrator can see this.
+    print '<p class="error">Could not retrieve the data because:<br>' .
+    mysqli_error($dbc) . '.</p><p>The query being run was: ' . $query .
+    '</p>';
+  } // End of query IF.
+
+  // Close the connection.
+  mysqli_close($dbc);
 }
 ?>

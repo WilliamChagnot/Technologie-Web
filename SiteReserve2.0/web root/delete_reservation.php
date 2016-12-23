@@ -29,15 +29,17 @@ if (isset($_GET['id']) && is_numeric($_GET['id']) && ($_GET['id'] > 0))
     // Make the form:
     print '<form action="delete_reservation.php" method="post">
     <p>Are you sure you want to delete this reservation?</p>
-    <div><blockquote>' . $row['destination'] . '</blockquote> ' . $row['nbpeople'];
+    <p><label>ID: ' . $_GET['id'] . '</label></p>
+    <p><label>Destination: ' . htmlentities($row['destination']) . '</label></p>
+    <p><label>Number of people: ' . htmlentities($row['nbpeople']) . '</label></p>';
 
     // Assurance?
     if ($row['assurance'] == 1)
     {
-      print ' <strong>Assurance!</strong>';
+      print '<strong>Assurance!</strong>';
     }
 
-    print '</div><br><input type="hidden" name="id" value="' . $_GET['id'] . '">
+    print '<br><input type="hidden" name="id" value="' . $_GET['id'] . '">
     <p><input type="submit" name="submit" value="Delete this Reservation!"></p>
     </form>';
   }

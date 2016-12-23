@@ -19,6 +19,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
 
   if (!empty($_POST['destination']) && !empty($_POST['nbpeople']))
   {
+    $_SESSION['nbpeople'] = $_POST['nbpeople'];
+    $_SESSION['destination'] = $_POST['destination'];
+
     // Set to get the price.
     $_SESSION['price'] = 0;
 
@@ -43,10 +46,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
     // The reservation has been made.
     if (mysqli_affected_rows($dbc) == 1)
     {
-      // Get the ID, the number of people and the destination from the user.
-      $_SESSION['nbpeople'] = get_something('nbpeople');
+      // Get the ID from the user.
       $_SESSION['id'] = get_something('id');
-      $_SESSION['destination'] = get_something('destination');
       print '<p>Your reservation has been stored.</p><p>Your ID is: ' . $_SESSION['id'] . '</p>';
 
       // include the view.
@@ -54,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
     }
 
     // The reservation didn't works.
-    else { include('templates/errors.php'); }
+    else { error(); }
 
     // Close the connection.
     mysqli_close($dbc);
@@ -62,17 +63,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
   // Validation of the people doing the reservation ("name" and "age" are array).
   elseif (!empty($_POST['name']) && !empty($_POST['age'])) {
 
+    $_SESSION['name'] = $_POST['name'];
+    $_SESSION['age'] = $_POST['age'];
+
     // Need the database connection.
     include('../mysqli_connect.php');
 
     for($i=0; $i<$_SESSION['nbpeople']; $i++)
     {
       // Get the right price.
-      $_SESSION['price'] += price($_POST['age'][$i]);
+      $_SESSION['price'] += price($_SESSION['age'][$i]);
 
       // Prepare the values for storing.
-      $name = mysqli_real_escape_string($dbc, trim(strip_tags($_POST['name'][$i])));
-      $age = mysqli_real_escape_string($dbc, trim(strip_tags($_POST['age'][$i])));
+      $name = mysqli_real_escape_string($dbc, trim(strip_tags($_SESSION['name'][$i])));
+      $age = mysqli_real_escape_string($dbc, trim(strip_tags($_SESSION['age'][$i])));
       $id = mysqli_real_escape_string($dbc, trim(strip_tags($_SESSION['id'])));
 
       // Define the query.
@@ -99,11 +103,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
       <p>ID: ' . $_SESSION['id'] . '</p>
       <p>Destination: ' . $_SESSION['destination'] . '</p>
       <p>Number of people: ' . $_SESSION['nbpeople'] . '</p>
-      <p>Cost: ' . $_SESSION['price'] . '</p>
-      <p>We wish you a pleasant journey!</p>';
+      <p>Cost: ' . $_SESSION['price'] . '</p>';
+
+      for($i = 0; $i < $_SESSION['nbpeople']; $i++)
+      {
+        print '<p>Name: ' . $_SESSION['name'][$i] . '</p>';
+        print '<p>Age: ' . $_SESSION['age'][$i] . '</p>';
+      }
+
+      print '<p>We wish you a pleasant journey!</p>';
+
     }
     // Error.
-    else { include('templates/errors.php'); }
+    else { error(); }
 
     // Close the connection.
     mysqli_close($dbc);

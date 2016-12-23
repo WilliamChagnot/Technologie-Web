@@ -1,10 +1,10 @@
-
+<!-- FIRST PAGE. -->
 <h2>Add a Reservation</h2><p>
 The price is 10€ until 12 years old, 15€ after.<br />
 The price for the assurance is 20€ despite the number of people.</p>
 <form action="add_reservation.php" method="post">
  <p><label>Destination </label>
-   <select name="destination" id="destination">;
+   <select name="destination" id="destination">
      <?php
      $destinations = array('Amsterdam','Berlin','Brussels','London','Paris');
      foreach($destinations as $destine)
@@ -13,9 +13,8 @@ The price for the assurance is 20€ despite the number of people.</p>
      }
      ?>
    </select></p>
-   <p><label>Number of people <input type="number" min="1" name="nbpeople"></label></p>
+   <p><label>Number of people <input type="number" min="1" max="10" name="nbpeople"></label></p>
    <p><label>Assurance? <input type="checkbox" name="assurance" value="yes"></label></p>
    <p><input type="submit" name="submit" value="Add this reservation!"></p>
    <p><input type="reset" value="Reset the value"></p>
 </form>
-<?php

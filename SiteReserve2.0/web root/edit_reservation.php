@@ -26,11 +26,12 @@ if (isset($_GET['id']) && is_numeric($_GET['id']) && ($_GET['id'] > 0))
     // Retrieve the information.
     $row = mysqli_fetch_array($result);
 
-    // Make the form:
+    // Make the form: the input values are less secure because you are suppose to be a good admin.
     print '<form action="edit_reservation.php" method="post">
+      <p><label>ID: ' . $_GET['id'] . '</label></p>
       <p><label>Destination <input type="text" name="destination" value="' .
       htmlentities($row['destination']) . '"></label></p>
-      <p><label>Number of people <input type="text" name="nbpeople" value="' .
+      <p><label>Number of people <input type="number" min="1" name="nbpeople" value="' .
       htmlentities($row['nbpeople']) . '"></label></p>
       <p><label>Assurance? <input type="checkbox" name="assurance" value="yes"';
 

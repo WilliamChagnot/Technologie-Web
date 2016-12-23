@@ -51,7 +51,7 @@ if ($loggedin)
   <form action='login.php' method='post'>
   <p><label>Email Address <input type='email' name='email'></label></p>
   <p><label>Password <input type='password' name='password'></label></p>
-  <p><input type='submit' name='submit' value='Log In!'</p>
+  <p><input type='submit' name='submit' value='Log In!'></p>
   </form>";
 
 }
