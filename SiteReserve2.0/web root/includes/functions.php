@@ -119,10 +119,10 @@ function clean()
       // If the row in reservation don't have peoples associate.
       if (!$usefull)
       {
-        print 'useless';
+        //print 'useless';
         $query = "DELETE FROM reservations WHERE id={$rowR['id']} LIMIT 1";
         $result = mysqli_query($dbc, $query);
-
+/* Still there for different test.
         // Report on the result:
         if (mysqli_affected_rows($dbc) == 1)
         {
@@ -132,12 +132,19 @@ function clean()
         {
           print '<p class="error">Could not delete the blog entry because:<br>' . mysqli_error($bdc) .
           '</p><p>The query being run was: ' . $query . '</p>';
-        }
+        } */
       }
     } // End of while loop.
   }
 
   // Close the connection.
   mysqli_close($dbc);
+}
+
+// Is use to destroy the cookie in case of error.
+function error()
+{
+  setcookie('test', 'test', time()-4000);
+  clean();
 }
 ?>

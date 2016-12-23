@@ -8,7 +8,7 @@ include('templates/header.html');
 // Restrict access to connected people only.
 if (!is_connected())
 {
-  print '<h2>Access Denied!</h2><p classe="error">You do not have permission to access this page.</p>';
+  print '<h2>Access Denied!</h2><p classe="error">You do not have permission to access this page.</p><p classe="error">Please go back to the Home page.</p>';
   include('templates/footer.html');
   exit();
 }
@@ -16,6 +16,7 @@ if (!is_connected())
 // Check for a form submission.
 if ($_SERVER['REQUEST_METHOD'] == 'POST')
 {
+
   if (!empty($_POST['destination']) && !empty($_POST['nbpeople']))
   {
     // Set to get the price.
@@ -53,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
     }
 
     // The reservation didn't works.
-    else { print '<p class="error">Could not store the reservation please contact an administrator.<br></p>'; }
+    else { include('templates/errors.php'); }
 
     // Close the connection.
     mysqli_close($dbc);
@@ -101,7 +102,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
       <p>Cost: ' . $_SESSION['price'] . '</p>
       <p>We wish you a pleasant journey!</p>';
     }
-    else { print '<p class="error">Could not store the reservation please contact an administrator.<br></p>'; }
+    // Error.
+    else { include('templates/errors.php'); }
 
     // Close the connection.
     mysqli_close($dbc);
