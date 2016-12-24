@@ -105,11 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
       <p>Number of people: ' . $_SESSION['nbpeople'] . '</p>
       <p>Cost: ' . $_SESSION['price'] . '</p>';
 
-      for($i = 0; $i < $_SESSION['nbpeople']; $i++)
-      {
-        print '<p>Name: ' . $_SESSION['name'][$i] . '</p>';
-        print '<p>Age: ' . $_SESSION['age'][$i] . '</p>';
-      }
+      printpeople($_SESSION['id']);
 
       print '<p>We wish you a pleasant journey!</p>';
 

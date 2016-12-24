@@ -170,17 +170,11 @@ function printpeople($id)
     //Retrieve the returned records:
     while ($row = mysqli_fetch_array($result))
     {
-
-
-      if ($row['id'] = $id)
+      if ($row['id'] == $id)
       {
-        print $row['id'];
-
         // Print the record:
-        print "<div><blockquote>ID: {$row['id']}</blockquote><blockquote>Name: {$row['name']}</blockquote>Age: {$row['age']}\n";
-
+        print "<blockquote>Name: {$row['name']}</blockquote><blockquote>Age: {$row['age']}</blockquote>\n";
       }
-
     } // End of while loop.
   }
   else

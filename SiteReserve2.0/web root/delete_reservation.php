@@ -33,6 +33,8 @@ if (isset($_GET['id']) && is_numeric($_GET['id']) && ($_GET['id'] > 0))
     <p><label>Destination: ' . htmlentities($row['destination']) . '</label></p>
     <p><label>Number of people: ' . htmlentities($row['nbpeople']) . '</label></p>';
 
+    printpeople($_GET['id']);
+
     // Assurance?
     if ($row['assurance'] == 1)
     {

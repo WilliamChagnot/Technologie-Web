@@ -20,7 +20,7 @@ include('../mysqli_connect.php');
 if (isset($_GET['id']) && is_numeric($_GET['id']) && ($_GET['id'] > 0))
 {
   // Define the query.
-  $query = "SELECT destination, nbpeople, assurance FROM reservations WHERE id={$_GET['id']}";
+  $query = "SELECT destination, nbpeople, assurance, price FROM reservations WHERE id={$_GET['id']}";
   if ($result = mysqli_query($dbc, $query))
   {
     // Retrieve the information.
@@ -31,8 +31,9 @@ if (isset($_GET['id']) && is_numeric($_GET['id']) && ($_GET['id'] > 0))
       <p><label>ID: ' . $_GET['id'] . '</label></p>
       <p><label>Destination <input type="text" name="destination" value="' .
       htmlentities($row['destination']) . '"></label></p>
-      <p><label>Number of people <input type="number" min="1" name="nbpeople" value="' .
-      htmlentities($row['nbpeople']) . '"></label></p>
+      <p>Cost: ' . htmlentities($row['price']) . '</p>
+      <p><label>Number of people: ' . htmlentities($row['nbpeople']) . '</label></p>
+      <p>if you want to add or remove people it might be easier to do a new reservation.</p>
       <p><label>Assurance? <input type="checkbox" name="assurance" value="yes"';
 
     // Check the box for the assurance:
@@ -44,6 +45,8 @@ if (isset($_GET['id']) && is_numeric($_GET['id']) && ($_GET['id'] > 0))
       <input type="hidden" name="id" value="' . $_GET['id'] . '">
       <p><input type="submit" name="submit" value="Update This Reservation!"></p>
       </form>';
+
+    include('templates/destination.html');
   }
   else
   {
