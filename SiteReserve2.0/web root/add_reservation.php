@@ -103,7 +103,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
       <p>ID: ' . $_SESSION['id'] . '</p>
       <p>Destination: ' . $_SESSION['destination'] . '</p>
       <p>Number of people: ' . $_SESSION['nbpeople'] . '</p>
-      <p>Cost: ' . $_SESSION['price'] . '</p>';
+      <p>Please pay the amout of ' . $_SESSION['price'] . ' to the account 000-0000000-00.</p>';
 
       printpeople($_SESSION['id']);
 
