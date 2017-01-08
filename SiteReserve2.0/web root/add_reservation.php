@@ -83,19 +83,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
       $query = "INSERT INTO peoples (name, age, id) VALUES ('$name', '$age', '$id')";
       mysqli_query($dbc, $query);
     }
-    // Close the connection.
-    mysqli_close($dbc);
 
-    // Need the database connection.
-    include('../mysqli_connect.php');
+    // Check if the reservation has been made.
+    if (mysqli_affected_rows($dbc) == 1)
+    {
+      // Prepare the value for storing.
+      $price = mysqli_real_escape_string($dbc, trim(strip_tags($_SESSION['price'])));
 
-    // Prepare the value for storing.
-    $price = mysqli_real_escape_string($dbc, trim(strip_tags($_SESSION['price'])));
-
-    // Define the query.
-    $querybis = "UPDATE reservations SET price = ('$price') WHERE id = ('$id')";
-    mysqli_query($dbc, $querybis);
-
+      // Define the query.
+      $querybis = "UPDATE reservations SET price = ('$price') WHERE id = ('$id')";
+      mysqli_query($dbc, $querybis);
+    }
     // Check if the reservation has been made.
     if (mysqli_affected_rows($dbc) == 1)
     {
@@ -108,7 +106,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
       printpeople($_SESSION['id']);
 
       print '<p>We wish you a pleasant journey!</p>';
-
     }
     // Error.
     else { error(); }
